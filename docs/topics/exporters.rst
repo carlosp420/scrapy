@@ -39,35 +39,35 @@ the end of the exporting process
 Here you can see an :doc:`Item Pipeline <item-pipeline>` which uses an Item
 Exporter to export scraped items to different files, one per spider::
 
-   from scrapy import signals
-   from scrapy.exporters import XmlItemExporter
+    from scrapy import signals
+    from scrapy.exporters import XmlItemExporter
 
-   class XmlExportPipeline(object):
+    class XmlExportPipeline(object):
 
-       def __init__(self):
-           self.files = {}
+        def __init__(self):
+            self.files = {}
 
-        @classmethod
-        def from_crawler(cls, crawler):
-            pipeline = cls()
-            crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
-            crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
-            return pipeline
+         @classmethod
+         def from_crawler(cls, crawler):
+             pipeline = cls()
+             crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
+             crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
+             return pipeline
 
-       def spider_opened(self, spider):
-           file = open('%s_products.xml' % spider.name, 'w+b')
-           self.files[spider] = file
-           self.exporter = XmlItemExporter(file)
-           self.exporter.start_exporting()
+        def spider_opened(self, spider):
+            file = open('%s_products.xml' % spider.name, 'w+b')
+            self.files[spider] = file
+            self.exporter = XmlItemExporter(file)
+            self.exporter.start_exporting()
 
-       def spider_closed(self, spider):
-           self.exporter.finish_exporting()
-           file = self.files.pop(spider)
-           file.close()
+        def spider_closed(self, spider):
+            self.exporter.finish_exporting()
+            file = self.files.pop(spider)
+            file.close()
 
-       def process_item(self, item, spider):
-           self.exporter.export_item(item)
-           return item
+        def process_item(self, item, spider):
+            self.exporter.export_item(item)
+            return item
 
 
 .. _topics-exporters-field-serialization:
