@@ -37,12 +37,13 @@ to export
 the end of the exporting process
 
 Here you can see an :doc:`Item Pipeline <item-pipeline>` which uses an Item
-Exporter to export scraped items to different files, one per spider.
-
-Example::
+Exporter to export scraped items to different files, one per spider.::
 
     from scrapy import signals
     from scrapy.exporters import XmlItemExporter
+
+    def test():
+      pass
 
     class XmlExportPipeline(object):
 
